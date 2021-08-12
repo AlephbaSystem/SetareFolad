@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SetareFolad", "SetareFolad\SetareFolad.vbproj", "{EF762047-57F4-4EBE-856C-7A354E0586BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF762047-57F4-4EBE-856C-7A354E0586BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF762047-57F4-4EBE-856C-7A354E0586BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF762047-57F4-4EBE-856C-7A354E0586BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF762047-57F4-4EBE-856C-7A354E0586BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {17FBC62C-39B1-4B86-8434-B384FC705C2A}
+	EndGlobalSection
+EndGlobal

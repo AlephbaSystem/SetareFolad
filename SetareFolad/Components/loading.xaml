@@ -1,0 +1,23 @@
+﻿<Window x:Class="loading"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SetareFolad"
+        mc:Ignorable="d"
+        Title="loading" Height="125" Width="300" ShowInTaskbar="False" WindowStyle="None" WindowStartupLocation="CenterScreen" BorderBrush="Black" Background="White" SizeToContent="Height" Topmost="True" Cursor="Wait" MinWidth="300" MinHeight="125" MaxWidth="300" MaxHeight="125" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" UseLayoutRounding="False">
+    <StackPanel Margin="20">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="L" Grid.Column="0" Name="pbDetail" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" />
+            <Label Content="L" Grid.Column="1" Name="pbProgre" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Margin="-3,0,0,0" FlowDirection="RightToLeft"  />
+        </Grid>
+        <ProgressBar Minimum="0" Maximum="100" Value="0" Name="pbStatus" Height="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsIndeterminate="True"/>
+        
+        <Label Content="لطفا منتظر بمانید" Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+
+    </StackPanel>
+</Window>
