@@ -78,22 +78,17 @@ Public Class IOptions
                 sheet.Name = sheet_name
             End If
 
-            ' Add some data to individual cells.
-            sheet.Cells(2, 2) = ""
-            sheet.Cells(2, 3) = "عرض نوار"
-            sheet.Cells(2, 4) = "تعداد نوار"
-            sheet.Cells(2, 5) = "عرض کل"
 
             ' Make that range of cells bold and red.
-            Dim header_range As Excel.Range = sheet.Range("B1",
-            "E1")
+            Dim header_range As Excel.Range = sheet.Range("B2",
+            "E2")
             header_range.Font.Bold = True
 
-            header_range = sheet.Range("B1",
-            "E" & o.Item2.Count)
+            header_range = sheet.Range("B2",
+            "E" & (o.Item2.Count + 2))
             header_range.BorderAround2()
 
-            Dim value_range As Excel.Range = sheet.Range("B2", "E" & o.Item2.Count)
+            Dim value_range As Excel.Range = sheet.Range("B2", "E" & o.Item2.Count + 1)
             value_range.Value2 = "test"
             Dim c As Integer = 3
             For Each i2 As Tuple(Of String, Integer, Integer, Integer) In o.Item2
@@ -116,8 +111,13 @@ Public Class IOptions
                 c += 1
             Next
 
-            sheet.Cells(o.Item2.Count + 1, 4) = "جمع کل"
-            sheet.Cells(o.Item2.Count + 1, 5) = o.Item2.Sum(Function(item) item.Item4)
+            ' Add some data to individual cells.
+            sheet.Cells(2, 2) = ""
+            sheet.Cells(2, 3) = "عرض نوار"
+            sheet.Cells(2, 4) = "تعداد نوار"
+            sheet.Cells(2, 5) = "عرض کل"
+            sheet.Cells(o.Item2.Count + 3, 4) = "جمع کل"
+            sheet.Cells(o.Item2.Count + 3, 5) = o.Item2.Sum(Function(item) item.Item4)
 
             releaseObject(sheet)
         Next
@@ -164,16 +164,6 @@ Public Class IOptions
                 Dim tr As New Threading.Thread(Sub() WriteToExcel(dir, ot))
                 tr.Start()
             End If
-            'Dim sw As New StreamWriter(dir)
-            'Dim sb As New Text.StringBuilder()
-            'Dim i As Integer = 0
-            'For Each o In ot
-            '    sb.AppendLine(ConvertToCSV(o.Value))
-            '    sb.AppendLine("Best " & i.ToString & ": ")
-            'Next
-
-            'sw.Write(sb.ToString)
-            'sw.Close()
         Catch ex As Exception
             If ex.Message.Contains("office") Then
                 MessageBox.Show("لطفا office را نصب کنید")

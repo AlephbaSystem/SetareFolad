@@ -44,6 +44,11 @@ Public Class loading
             MProgressValue = value
         End Set
     End Property
+    Public Event cancelClicked(ByVal sender As Object, ByVal e As EventArgs)
+
+    Private Sub laqv_click(sender As Object, e As EventArgs) Handles laqv.Click
+        RaiseEvent cancelClicked(sender, e)
+    End Sub
     Public Sub New()
 
         ' This call is required by the designer.

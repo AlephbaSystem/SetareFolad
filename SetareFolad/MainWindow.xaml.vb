@@ -23,58 +23,23 @@ Class MainWindow
         clbSections.ItemsSource = Sections
     End Sub
 
-    'Private Sub add_click(sender As Object, e As EventArgs) Handles Add.Click
-    '    If History.Count > 0 Then
-    '        clean_click(sender, e)
-    '    End If
-    'If Tol.Text = "" Or Arz.Text = "" Or Tedad.Text = "" Then
-    '    Return
-    'End If
-    'Dim TxA As KeyValuePair(Of Integer, Integer) = KeyValuePair.Create(Of Integer, Integer)(Tol.Text, Arz.Text)
-    'If (Exclusi.IsChecked) Then
-    '    If Not exclusive.Contains(TxA) Then
-    '        exclusive.Add(TxA)
-    '    End If
-    'End If
-    'If (Inclusi.IsChecked) Then
-    '    If Not inclusive.Contains(TxA) Then
-    '        inclusive.Add(TxA)
-    '    End If
-    'End If
-    'If (rod.IsChecked) Then
-    '    If Not rods.Contains(TxA) Then
-    '        rods.Add(TxA)
-    '    End If
-    'End If
-
-    'News.add(Tol.Text.Trim + " * " + Arz.Text.Trim + " x" + Tedad.Text.Trim)
-    'Tol.Text = Nothing
-    'Arz.Text = Nothing
-    'Exclusi.IsChecked = False
-    'Inclusi.IsChecked = False
-    'rod.IsChecked = True
-    'End Sub
     Private Sub clean_click(sender As Object, e As EventArgs) Handles Clean.Click
-        'Tol.Text = Nothing
-        'Arz.Text = Nothing
-        'Tedad.Text = Nothing
-        'Perti.Text = Nothing
         CurrentPage = 0
         SizeVaraq.Text = Nothing
-        'Exclusi.IsChecked = False
-        'Inclusi.IsChecked = False
-        'rod.IsChecked = True
-        'Exclusi.IsChecked = False
         MizanEstefade.Content = "N/A"
         TedadNavar.Content = "N/A"
         Tarikh.Content = "N/A"
         Jamkol.Content = "N/A"
         MizanPerti.Content = "N/A"
-        'News.clean()
         HalatLbl.Content = "حالت"
         History.clean()
+        PertiMax.Text = Nothing
+        PertiMin.Text = Nothing
+        For Each s In Sections
+            s.IsChecked = False
+        Next
         _Width = 0
-        'FixRods()
+        Result.Clear()
     End Sub
     Private _Sections As ObservableCollection(Of CheckedListItem(Of String))
     Public Property Sections() As ObservableCollection(Of CheckedListItem(Of String))
@@ -189,6 +154,9 @@ Class MainWindow
                                            End While
                                        End Sub)
         tr.Start()
+
+        trp.Add(tr)
+
         Result = Calcul.Calculate(width, pMin, pMax, rdtocal)
         Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
     New Action(Function()
@@ -196,24 +164,24 @@ Class MainWindow
                End Function))
     End Sub
     Private Sub FinishedCalculate()
-
         wn.pbStatus.Value = wn.MProgress
-        'FixRods()
-        If Result.Count <= 0 Then Return
 
-        Dim xDate As DateTime = Convert.ToDateTime(Now().ToString)
-        Dim persianDateString As String = xDate.ToString("yyyy/MM/dd hh:mm", New CultureInfo("fa-IR"))
+        If Result.Count > 0 Then
+            Dim xDate As DateTime = Convert.ToDateTime(Now().ToString)
+            Dim persianDateString As String = xDate.ToString("yyyy/MM/dd hh:mm", New CultureInfo("fa-IR"))
 
-        MizanEstefade.Content = Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value) * 100 / _Width & " %"
-        TedadNavar.Content = Result(CurrentPage).Value.Count
-        MizanPerti.Content = _Width - Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value)
-        Jamkol.Content = Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value)
-        Tarikh.Content = persianDateString
-        History.clean()
-        For Each c In Result(CurrentPage).Value
-            History.add(c.Key.ToString + " * " + c.Value.ToString, True)
-        Next
-        HalatLbl.Content = String.Format("حالت {0} از {1}", CurrentPage + 1, Result.Count)
+            MizanEstefade.Content = Math.Round(Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value) * 100 / _Width) & " %"
+            TedadNavar.Content = Result(CurrentPage).Value.Count
+            MizanPerti.Content = _Width - Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value)
+            Jamkol.Content = Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value)
+            Tarikh.Content = persianDateString
+            History.clean()
+            For Each c In Result(CurrentPage).Value
+                History.add(c.Key.ToString + " * " + c.Value.ToString, True)
+            Next
+            HalatLbl.Content = String.Format("حالت {0} از {1}", CurrentPage + 1, Result.Count)
+        End If
+
         wn.Close()
         Me.IsEnabled = True
         Me.Opacity = 100
@@ -230,10 +198,23 @@ Class MainWindow
             GC.Collect()
         End Try
     End Sub
+    Public trp As New List(Of Threading.Thread)
+    Private Sub cancel_pg_clicked(sender As Object, e As EventArgs)
+        FinishedCalculate()
+        trp.Reverse()
+        For Each t In trp
+            t.Interrupt()
+        Next
+        trp.Clear()
+    End Sub
     Private Sub Calc_click(sender As Object, e As EventArgs) Handles Calc.Click
         Me.IsEnabled = False
         Me.Opacity = 50
+        Result.Clear()
+        CurrentPage = 0
+        History.clean()
         wn = New loading
+        AddHandler wn.cancelClicked, AddressOf cancel_pg_clicked
 
         wn.MProgress = 100
         wn.OveralLabel = "در حال محاسبه"
@@ -265,8 +246,8 @@ Class MainWindow
         widt = _Width
         Dim tr As New Threading.Thread(Sub() CalculateThread(widt, pmin, pmax, rodsToCal))
         tr.IsBackground = True
+        trp.Add(tr)
         tr.Start()
-        'Result = Calcul.Calculate(_Width, PertiMin.Text, PertiMax.Text, rodsToCal) 
     End Sub
     Private Sub ForwardBtn_click(sender As Object, e As EventArgs) Handles ForwardBtn.Click
         If Result.Count = 0 Then Return
@@ -276,7 +257,7 @@ Class MainWindow
         End If
         HalatLbl.Content = String.Format("حالت {0} از {1}", CurrentPage + 1, Result.Count)
 
-        MizanEstefade.Content = Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value) * 100 / _Width & " %"
+        MizanEstefade.Content = Math.Round(Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value) * 100 / _Width) & " %"
         TedadNavar.Content = Result(CurrentPage).Value.Count
         MizanPerti.Content = _Width - Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value)
         Jamkol.Content = Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value)
@@ -294,7 +275,7 @@ Class MainWindow
         End If
         HalatLbl.Content = String.Format("حالت {0} از {1}", CurrentPage + 1, Result.Count)
 
-        MizanEstefade.Content = Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value) * 100 / _Width & " %"
+        MizanEstefade.Content = Math.Round(Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value) * 100 / _Width) & " %"
         TedadNavar.Content = Result(CurrentPage).Value.Count
         MizanPerti.Content = _Width - Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value)
         Jamkol.Content = Result(CurrentPage).Value.Sum(Function(x) x.Key * x.Value)

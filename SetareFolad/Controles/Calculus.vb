@@ -5,6 +5,7 @@
     Private _ThrowingSpaceUpper As Integer
     Private _ThrowingSpaceLower As Integer
     Private _Rods As List(Of Integer)
+    Private _Areas As New List(Of List(Of Integer))
     Private _Ans As New List(Of Dictionary(Of Integer, Integer))
     Private Function IsSquare(x As Integer, y As Integer) As Boolean
         Return x <> y
@@ -31,8 +32,8 @@
                 _Ans.Add(dic)
             End If
             Return
-            End If
-            For i = pos To _Rods.Count - 1
+        End If
+        For i = pos To _Rods.Count - 1
             Dim count As Integer = _Width / _Rods(i)
             For j = 0 To count
                 Dim x As Integer = (j * _Rods(i))
@@ -71,6 +72,27 @@
 
         Return ot
     End Function
+    Private Sub Calculate(pos As Integer, pick As List(Of Integer))
+        If pick Is Nothing Then pick = New List(Of Integer)
+        Dim sum As Integer = pick.Sum(Function(x) x)
+        If _Width < sum Then Return
+        If Not _Areas.Contains(pick) Then
+            Dim tmp As New List(Of Integer)
+            tmp.AddRange(pick.ToArray)
+            _Areas.Add(tmp)
+        End If
+        If pos = _Rods.Count() Then Return
+        Dim count As Integer = _Width / _Rods(pos)
+        For j = 0 To count
+            For k = 0 To j
+                pick.Add(_Rods(pos))
+            Next
+            Calculate(pos + 1, pick)
+            For k = 0 To j
+                pick.RemoveAt(pick.Count - 1)
+            Next
+        Next
+    End Sub
     Public Function Calculate(width As Integer,
                               throwing_space_lower As Integer,
                               throwing_space_upper As Integer,
@@ -79,31 +101,62 @@
         _Rods = rods
         _ThrowingSpaceLower = throwing_space_upper
         _ThrowingSpaceUpper = throwing_space_lower
-        Dim best_rods As New List(Of KeyValuePair(Of Integer, Integer))
+        _Areas.Clear()
+        Calculate(0, Nothing)
+
+        Dim best As New List(Of List(Of Integer))
 
         Dim answers As New List(Of KeyValuePair(Of Integer, Dictionary(Of Integer, Integer)))
-        Calculate(0, 0, Nothing)
-        For Each an In _Ans
-            'Dim _return As New List(Of KeyValuePair(Of Integer, Integer))
-            'Dim tmp As KeyValuePair(Of Integer, Integer)
-            'tmp = KeyValuePair.Create(Of Integer, Integer)(an.Key + sum, an.Value)
-
-            'For Each i In _Rods
-            '    Dim test As Integer = (an.Value And (1 << _Rods.IndexOf(i)))
-            '    If test > 0 Then
-            '        _return.Add(i)
-            '    End If
-            'Next
+        For Each i In _Areas
+            Dim state As List(Of Integer) = i
             Dim sum As Integer = 0
-            For Each a In an
-                sum = a.Key * a.Value
+            For Each j In state
+                sum += j
             Next
-            answers.Add(KeyValuePair.Create(Of Integer, Dictionary(Of Integer, Integer))(sum, an))
+            'if(width - sum > throwing_space_upper or width - sum < throwing_space_lower) continue;
+            If _Width - sum > _ThrowingSpaceUpper Or _Width - sum < _ThrowingSpaceLower Then Continue For
+            best.Add(state)
+            Dim dic As New Dictionary(Of Integer, Integer)
+            For Each st In state
+                If dic.ContainsKey(st) Then
+                    dic(st) += 1
+                Else
+                    dic.Add(st, 1)
+                End If
+            Next
+            answers.Add(KeyValuePair.Create(Of Integer, Dictionary(Of Integer, Integer))(_Width - sum, dic))
+            best.Add(state)
         Next
+
+        'Calculate(0, 0, Nothing)
+        'For Each an In _Ans
+        '    Dim sum As Integer = 0
+        '    For Each a In an
+        '        sum = a.Key * a.Value
+        '    Next
+        '    answers.Add(KeyValuePair.Create(Of Integer, Dictionary(Of Integer, Integer))(sum, an))
+        'Next
         QuickSortInt(answers, 0, answers.Count - 1)
-        'answers.Reverse()
         Return answers
     End Function
+    'For (auto i : areas){
+    '    vector <int> state = i;
+    '    int sum = 0 ;
+    '    For (int j = 0 ; j < state.size() ; ++j) {
+    '      sum += state[j];
+    '    }
+    '    If (width - sum > throwing_space_upper Or width - sum < throwing_space_lower) Continue;
+    '    best.push_back(state);
+    '}
+
+    'cout << "Answer is : \n";
+    'For (int i = 0 ; i < best.size() ; ++i){
+    '  cout << i+1 << ' ' ;
+    '  For (int j = 0 ; j < best[i].size() ; ++j) {
+    '    cout << best[i][j] << ' ';
+    '  }
+    '  cout << "\n-----------------------------\n";
+    '}
 
     Public Shared Sub QuickSortInt(ByRef awIntArr As List(Of KeyValuePair(Of Integer, Dictionary(Of Integer, Integer))),
            ByVal aLoIdx As Integer, ByVal aHiIdx As Integer)
