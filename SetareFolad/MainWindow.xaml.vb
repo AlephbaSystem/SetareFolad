@@ -143,11 +143,7 @@ Class MainWindow
                                                           If wn IsNot Nothing Then
                                                               wn.Progress = 1
                                                               wn.CureentLabel += 1
-                                                              If (wn.Progress * 100) / wn.MProgress <= 10 Then
-                                                                  wn.pbStatus.IsIndeterminate = True
-                                                              Else
-                                                                  wn.pbStatus.IsIndeterminate = False
-                                                              End If
+                                                              wn.pbStatus.IsIndeterminate = False
                                                           End If
                                                       End Function))
                                                Threading.Thread.Sleep(100)
@@ -233,13 +229,12 @@ Class MainWindow
             If Sections.Where(Function(t) t.Item = r.Key And t.IsChecked = True).Count > 0 Then
                 rodsToCal.Add(r.Value)
             End If
-            wn.MProgress += (_Width / r.Value)
             Dim bitmp As New Numerics.BigInteger(_Width / r.Value)
             bigint *= bitmp
         Next
         wn.OveralLabel = "در حال محاسبه" & " ~ " & bigint.ToString
         wn.CureentLabel = 0
-        wn.MProgress = bigint
+        wn.MProgress = 100
         Dim pmin, pmax, widt As Integer
         pmin = PertiMin.Text
         pmax = PertiMax.Text
