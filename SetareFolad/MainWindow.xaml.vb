@@ -90,9 +90,9 @@ Class MainWindow
 
     Private Function CalculateArea(x As Double, y As Double)
         If x = y Then
-            Return 4 * x - 2
+            Return 4 * x - 4
         Else
-            Return 2 * (x + y) - 2
+            Return 2 * (x + y) - 4
         End If
     End Function
     Private Sub FixRods()
@@ -107,7 +107,7 @@ Class MainWindow
         rods.Add(KeyValuePair.Create(Of String, Integer)("40x40, 507, 508, 509, 30x50", CalculateArea(40, 40)))
         rods.Add(KeyValuePair.Create(Of String, Integer)("40x60, 50x50", CalculateArea(40, 60)))
         rods.Add(KeyValuePair.Create(Of String, Integer)("40x80, 60x60", CalculateArea(40, 80)))
-        rods.Add(KeyValuePair.Create(Of String, Integer)("کم فرانسوی", CalculateArea(46, 66.5)))
+        rods.Add(KeyValuePair.Create(Of String, Integer)("کم فرانسوی", CalculateArea(46, 68.5)))
         Dim i As Integer = 0
         For Each r In rods
             Sections.Add(New CheckedListItem(Of String)(r.Key))

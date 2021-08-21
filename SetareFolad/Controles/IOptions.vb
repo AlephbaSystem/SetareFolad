@@ -64,7 +64,7 @@ Public Class IOptions
             Threading.Thread.Sleep(100)
 
             ' See if the worksheet already exists.
-            Dim sheet_name As String = o.Item1.ToString
+            Dim sheet_name As String = o.Item1.ToString & "_" & cii.ToString()
 
             Dim sheet As Excel.Worksheet = FindSheet(workbook,
             sheet_name)
