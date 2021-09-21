@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>SetareFolad</RootNamespace>
+    <RootNamespace>Mim</RootNamespace>
     <UseWPF>true</UseWPF>
     <StartupObject>SetareFolad.Application</StartupObject>
     <Authors>soroush trb</Authors>
@@ -12,7 +12,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Alephba-System.pfx</AssemblyOriginatorKeyFile>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
-    <ApplicationIcon>st-logo (1).ico</ApplicationIcon>
+    <ApplicationIcon>mim.ico</ApplicationIcon>
     <Description>https://alephba-system.ir/%d9%86%d8%b1%d9%85-%d8%a7%d9%81%d8%b2%d8%a7%d8%b1-%d8%a8%d8%b1%d8%b4-%d9%88%d8%b1%d9%82-%d8%a7%d9%84%d9%81%d8%a8%d8%a7-%d8%b3%db%8c%d8%b3%d8%aa%d9%85/</Description>
     <Version>1.1.0</Version>
     <PackageProjectUrl>https://alephba-system.ir/ÙØ±Ù-Ø§ÙØ²Ø§Ø±-Ø¨Ø±Ø´-ÙØ±Ù-Ø§ÙÙØ¨Ø§-Ø³ÛØ³ØªÙ/</PackageProjectUrl>
@@ -22,6 +22,9 @@
     <RepositoryType>git</RepositoryType>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <PackageId>Mim</PackageId>
+    <Product>Mim</Product>
+    <AssemblyName>Mim</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,16 +33,14 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>0</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\Fonts\Sahel.ttf" />
     <None Remove="Assets\Images\trash.png" />
     <None Remove="Assets\st-logo.png" />
-    <None Include="..\..\..\..\Desktop\st-logo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -61,7 +62,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1">
+      <GeneratePathProperty>true</GeneratePathProperty>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
