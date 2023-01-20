@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SetareFolad"
+        xmlns:local="clr-namespace:Mim"
         mc:Ignorable="d"
         Background="#FFC5CBD4"
         Title="MainWindow" Height="595" Width="1024" FontFamily="Sahel">

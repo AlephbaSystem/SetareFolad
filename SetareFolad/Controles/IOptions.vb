@@ -21,7 +21,6 @@ Public Class IOptions
         For Each sheet As Excel.Worksheet In workbook.Sheets
             If (sheet.Name = sheet_name) Then Return sheet
         Next sheet
-
         Return Nothing
     End Function
     Private Sub WriteToExcel(dir As String, ot As List(Of Tuple(Of Integer, List(Of Tuple(Of String, Integer, Integer, Integer)))), Optional nw As Boolean = True)

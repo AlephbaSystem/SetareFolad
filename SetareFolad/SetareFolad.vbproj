@@ -2,20 +2,21 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <RootNamespace>Mim</RootNamespace>
     <UseWPF>true</UseWPF>
-    <StartupObject>SetareFolad.Application</StartupObject>
+    <StartupObject>Mim.Application</StartupObject>
     <Authors>soroush trb</Authors>
     <Company>Alephba-system</Company>
     <Copyright>Alephba-system</Copyright>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Alephba-System.pfx</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly> 
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <ApplicationIcon>mim.ico</ApplicationIcon>
     <Description>https://alephba-system.ir/%d9%86%d8%b1%d9%85-%d8%a7%d9%81%d8%b2%d8%a7%d8%b1-%d8%a8%d8%b1%d8%b4-%d9%88%d8%b1%d9%82-%d8%a7%d9%84%d9%81%d8%a8%d8%a7-%d8%b3%db%8c%d8%b3%d8%aa%d9%85/</Description>
     <Version>1.1.0</Version>
-    <PackageProjectUrl>https://alephba-system.ir/ÙØ±Ù-Ø§ÙØ²Ø§Ø±-Ø¨Ø±Ø´-ÙØ±Ù-Ø§ÙÙØ¨Ø§-Ø³ÛØ³ØªÙ/</PackageProjectUrl>
+    <PackageProjectUrl>https://alephba-system.ir/ÙØ±Ù
+-Ø§ÙØ²Ø§Ø±-Ø¨Ø±Ø´-ÙØ±Ù-Ø§ÙÙØ¨Ø§-Ø³ÛØ³ØªÙ
+/</PackageProjectUrl>
     <PackageIcon>st-logo.png</PackageIcon>
     <PackageIconUrl />
     <RepositoryUrl>https://github.com/tspersian/SetareFolad</RepositoryUrl>
@@ -62,17 +63,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1">
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.Office.Interop.Excel">
-      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Excel\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Excel.dll</HintPath>
-      <Private>true</Private>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
