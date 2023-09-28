@@ -19,7 +19,7 @@
 /</PackageProjectUrl>
     <PackageIcon>st-logo.png</PackageIcon>
     <PackageIconUrl />
-    <RepositoryUrl>https://github.com/tspersian/SetareFolad</RepositoryUrl>
+    <RepositoryUrl>https://github.com/tspersian/SetareFolad </RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -39,12 +39,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="alphbasystem.png" />
     <None Remove="Assets\Fonts\Sahel.ttf" />
     <None Remove="Assets\Images\trash.png" />
     <None Remove="Assets\st-logo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="alphbasystem.png" />
     <Resource Include="Assets\Fonts\Sahel.ttf" />
     <Resource Include="Assets\Images\st-logo.png" />
     <Resource Include="Assets\Images\trash.png" />
@@ -82,6 +84,9 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Update="rods.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

@@ -15,8 +15,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="38*" />
-            <RowDefinition Height="179*" />
+            <RowDefinition Height="73*" />
+            <RowDefinition Height="506*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -24,10 +24,19 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <DockPanel Grid.ColumnSpan="3" Background="#334155" VerticalAlignment="Top" Height="72">
-            <Image Source="Assets/Images/st-logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,10" Height="50" />
+        <DockPanel Grid.ColumnSpan="3" VerticalAlignment="Center" Height="72">
+            <DockPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF2E2E2E"/>
+                    <GradientStop Color="#FF1A1A1A" Offset="1"/>
+                </LinearGradientBrush>
+            </DockPanel.Background>
+            <Grid MouseLeftButtonDown="OpenWebsite">
+                <Image Source="/alphbasystem.png" Margin="0,-2,0,10" Width="85" Height="85" Stretch="UniformToFill" Cursor="Hand" DockPanel.Dock="Top" HorizontalAlignment="Right" />
+                <Label Content="محاسبات الفبا سیستم" Foreground="#00a693" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,85,0" FontFamily="Sahel" />
+            </Grid>
         </DockPanel>
-        <DockPanel Grid.Row="1" Grid.Column="1" Background="#FFDFE2E6" Margin="10,20,10,20" HorizontalAlignment="Stretch">
+        <DockPanel Grid.Row="1" Grid.Column="1" Background="#FFDFE2E6" Margin="10,20,10,20">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -36,8 +45,9 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition Height="0.5*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -77,17 +87,40 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Content="ورودی" Grid.Row="0" Grid.ColumnSpan="4" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#7a7b7b" Margin="0,10,0,0" />
-                <TextBox x:Name="SizeVaraq" PreviewTextInput="NumberValidationTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="20,0,20,0" Width="120" />
+                <TextBox x:Name="SizeVaraq" PreviewTextInput="NumberValidationTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" TextAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0" Width="NaN" />
                 <Label Content=": عرض ورق" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#FF7A7B7B" Margin="0,0,10,0" />
 
                 <TextBox x:Name="PertiMin" PreviewTextInput="NumberValidationTextBox" Grid.Row="2" Grid.Column="0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right"  Width="60" />
                 <Label Content=": حداکثر پرتی" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF7A7B7B" />
                 <TextBox x:Name="PertiMax" PreviewTextInput="NumberValidationTextBox" Grid.Row="2" Grid.Column="2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Stretch" Width="60" />
-                <Label Content=": حداقل پرتی" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#FF7A7B7B" Margin="0,0,10,0" />
+                <Label Content=": حداقل پرتی" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#FF7A7B7B" Margin="0,0,10,0" FontSize="11" />
 
                 <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" Orientation="Horizontal"/>
 
-                <Button x:Name="Clean" Grid.Column="0" Content="پاک کردن" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFA1A1AA" BorderBrush="#FFA1A1AA" Foreground="#FFF1F5F9" Margin="-674,-103,0,0" Height="38" />
+                <Button x:Name="Clean" Grid.Column="0" Content="پاک کردن" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-660,-77,0,0" Height="38" Foreground="White">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderThickness="1" BorderBrush="#a63300" Background="#a63300">
+                                <Grid>
+                                    <Rectangle x:Name="background" Opacity="1" />
+                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" OpacityMask="White" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="background" Property="Fill" Value="#00a693" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="background" Property="Fill" Value="#8a2c00" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+
+
+                <!--<Button x:Name="Clean" Grid.Column="0" Content="پاک کردن" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFA1A1AA" BorderBrush="#FFA1A1AA" Foreground="#FFF1F5F9" Margin="-674,-103,0,0" Height="38" />-->
 
 
 
@@ -107,11 +140,43 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,10,0,0" HorizontalAlignment="Center">
-                    <Button x:Name="ForwardBtn" HorizontalAlignment="Center" VerticalAlignment="Center" Content="&lt;" BorderBrush="{x:Null}" Background="{x:Null}" />
-                    <Label x:Name="HalatLbl" Content="حالت" HorizontalAlignment="Center" />
-                    <Button x:Name="BackBtn" Content="&gt;" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <!-- Styles for the Buttons and Label -->
+                    <StackPanel.Resources>
+                        <!-- Style for the Buttons -->
+                        <Style TargetType="Button">
+                            <Setter Property="Width" Value="30"/>
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Foreground" Value="#a63300"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="#00a693"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+
+                        <!-- Style for the Label -->
+                        <Style TargetType="Label">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Foreground" Value="#333"/>
+                            <Setter Property="Margin" Value="10,0"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <Button x:Name="ForwardBtn" HorizontalAlignment="Center" VerticalAlignment="Center" Content="&lt;" />
+                    <Label x:Name="HalatLbl" Content="حالت" VerticalAlignment="Center" />
+                    <Button x:Name="BackBtn" Content="&gt;" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </StackPanel>
-                <local:Listmenu x:Name="History" Grid.Row="1" Margin="20,10,20,10" />
+
+                <local:Listmenu x:Name="History" Grid.Row="1" Margin="20,10,20,10" Background="#3FFFFFFF" BorderBrush="White" />
             </Grid>
         </DockPanel>
     </Grid>

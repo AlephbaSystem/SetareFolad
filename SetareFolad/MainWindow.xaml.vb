@@ -1,6 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports System.Globalization
+Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Windows.Threading
 Imports Microsoft.Win32
@@ -99,15 +100,53 @@ Class MainWindow
         _Sections = New ObservableCollection(Of CheckedListItem(Of String))
         Sections = New ObservableCollection(Of CheckedListItem(Of String))
         rods.Clear()
+        If Not File.Exists("rods.conf") Then
+            Using resource As New StreamWriter("rods.conf")
+                resource.WriteLine("236 = 40x80")
+                resource.WriteLine("238 = 60x60")
+                resource.WriteLine("225 = 46x68.5")
+                resource.WriteLine("196 = 40x60")
+                resource.WriteLine("198 = 50x50")
+                resource.WriteLine("176 = 30x60")
+                resource.WriteLine("178 = 30x60")
+                resource.WriteLine("156 = 30x50")
+                resource.WriteLine("158 = 40x40")
+                resource.WriteLine("116 = 20x40")
+                resource.WriteLine("118 = 30x30")
+                resource.WriteLine("96 = 20x30")
+                resource.WriteLine("76 = 20x20")
+                resource.WriteLine("78 = 20x20")
+                resource.WriteLine("276 = 40x100")
+                resource.WriteLine("278 = 70x70")
+                resource.Flush()
+                resource.Close()
+            End Using
+        End If
 
-        rods.Add(KeyValuePair.Create(Of String, Integer)("20x20", CalculateArea(20, 20)))
-        rods.Add(KeyValuePair.Create(Of String, Integer)("20x30", CalculateArea(20, 30)))
-        rods.Add(KeyValuePair.Create(Of String, Integer)("30x30, 20x40", CalculateArea(30, 30)))
-        rods.Add(KeyValuePair.Create(Of String, Integer)("30x60", CalculateArea(30, 60)))
-        rods.Add(KeyValuePair.Create(Of String, Integer)("40x40, 507, 508, 509, 30x50", CalculateArea(40, 40)))
-        rods.Add(KeyValuePair.Create(Of String, Integer)("40x60, 50x50", CalculateArea(40, 60)))
-        rods.Add(KeyValuePair.Create(Of String, Integer)("40x80, 60x60", CalculateArea(40, 80)))
-        rods.Add(KeyValuePair.Create(Of String, Integer)("کم فرانسوی", CalculateArea(46, 68.5)))
+        Using resource As New StreamReader("rods.conf")
+            While Not resource.EndOfStream
+                Dim line As String = resource.ReadLine()
+                Dim parts() As String = line.Split(New Char() {"="c}, StringSplitOptions.RemoveEmptyEntries)
+                If parts.Length = 2 Then
+                    Dim key As String = parts(1).Trim()
+                    Dim value As Integer
+                    Dim calcKey = key.Split(New Char() {"x"c}, StringSplitOptions.TrimEntries)
+                    Dim calcX As Integer = Integer.TryParse(calcKey(0).Trim(), calcX)
+                    Dim calcY As Integer = Integer.TryParse(calcKey(1).Trim(), calcY)
+                    If Integer.TryParse(parts(0).Trim(), value) Then
+                        rods.Add(KeyValuePair.Create(Of String, Integer)($"{value} ({key})", CalculateArea(calcX, calcY)))
+                    End If
+                End If
+            End While
+        End Using
+        'rods.Add(KeyValuePair.Create(Of String, Integer)("20x20", CalculateArea(20, 20)))
+        'rods.Add(KeyValuePair.Create(Of String, Integer)("20x30", CalculateArea(20, 30)))
+        'rods.Add(KeyValuePair.Create(Of String, Integer)("30x30, 20x40", CalculateArea(30, 30)))
+        'rods.Add(KeyValuePair.Create(Of String, Integer)("30x60", CalculateArea(30, 60)))
+        'rods.Add(KeyValuePair.Create(Of String, Integer)("40x40, 507, 508, 509, 30x50", CalculateArea(40, 40)))
+        'rods.Add(KeyValuePair.Create(Of String, Integer)("40x60, 50x50", CalculateArea(40, 60)))
+        'rods.Add(KeyValuePair.Create(Of String, Integer)("40x80, 60x60", CalculateArea(40, 80)))
+        'rods.Add(KeyValuePair.Create(Of String, Integer)("کم فرانسوی", CalculateArea(46, 68.5)))
         Dim i As Integer = 0
         For Each r In rods
             Sections.Add(New CheckedListItem(Of String)(r.Key))
@@ -118,6 +157,7 @@ Class MainWindow
         Dim egex As New Regex("[^0-9]+")
         e.Handled = egex.IsMatch(e.Text)
     End Sub
+
     Private Sub CalculateThread(width As Integer, pMin As Integer, pMax As Integer, rdtocal As List(Of Integer))
         Dim tr As New Threading.Thread(Sub()
                                            Dim isen, isan As Boolean
@@ -244,6 +284,7 @@ Class MainWindow
         trp.Add(tr)
         tr.Start()
     End Sub
+
     Private Sub ForwardBtn_click(sender As Object, e As EventArgs) Handles ForwardBtn.Click
         If Result.Count = 0 Then Return
         CurrentPage += 1
@@ -322,5 +363,27 @@ Class MainWindow
             End Select
         End If
         Me.IsEnabled = True
+    End Sub
+    Private Sub OpenWebsite(sender As Object, e As MouseButtonEventArgs)
+        Process.Start("https://alephbasys.ir")
+    End Sub
+
+    Private Sub Clean_Click_1(sender As Object, e As RoutedEventArgs) Handles Clean.Click
+        CurrentPage = 0
+        SizeVaraq.Text = Nothing
+        MizanEstefade.Content = "N/A"
+        TedadNavar.Content = "N/A"
+        Tarikh.Content = "N/A"
+        Jamkol.Content = "N/A"
+        MizanPerti.Content = "N/A"
+        HalatLbl.Content = "حالت"
+        History.clean()
+        PertiMax.Text = Nothing
+        PertiMin.Text = Nothing
+        For Each s In Sections
+            s.IsChecked = False
+        Next
+        _Width = 0
+        Result.Clear()
     End Sub
 End Class

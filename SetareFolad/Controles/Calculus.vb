@@ -139,25 +139,6 @@
         QuickSortInt(answers, 0, answers.Count - 1)
         Return answers
     End Function
-    'For (auto i : areas){
-    '    vector <int> state = i;
-    '    int sum = 0 ;
-    '    For (int j = 0 ; j < state.size() ; ++j) {
-    '      sum += state[j];
-    '    }
-    '    If (width - sum > throwing_space_upper Or width - sum < throwing_space_lower) Continue;
-    '    best.push_back(state);
-    '}
-
-    'cout << "Answer is : \n";
-    'For (int i = 0 ; i < best.size() ; ++i){
-    '  cout << i+1 << ' ' ;
-    '  For (int j = 0 ; j < best[i].size() ; ++j) {
-    '    cout << best[i][j] << ' ';
-    '  }
-    '  cout << "\n-----------------------------\n";
-    '}
-
     Public Shared Sub QuickSortInt(ByRef awIntArr As List(Of KeyValuePair(Of Integer, Dictionary(Of Integer, Integer))),
            ByVal aLoIdx As Integer, ByVal aHiIdx As Integer)
         If awIntArr.Count <= 0 Then Return
@@ -184,5 +165,39 @@
         If (xHi > aLoIdx) Then QuickSortInt(awIntArr, aLoIdx, xHi)
     End Sub
 
+    Public Function BestCombination(width As Integer, rods As List(Of Integer)) As Tuple(Of List(Of Integer), Integer)
+        Dim n As Integer = rods.Count
+        Dim dp(width) As Integer
+        For i As Integer = 0 To width
+            dp(i) = -1
+        Next
+        dp(0) = 0
 
+        For w As Integer = 0 To width
+            For j As Integer = 0 To n - 1
+                If rods(j) <= w AndAlso dp(w - rods(j)) <> -1 Then
+                    dp(w) = Math.Max(dp(w), dp(w - rods(j)) + rods(j))
+                End If
+            Next
+        Next
+
+        If dp(width) = -1 Then
+            Return New Tuple(Of List(Of Integer), Integer)(New List(Of Integer)(), width)
+        End If
+
+        Dim combination As New List(Of Integer)()
+        Dim w_temp As Integer = width
+        While w_temp > 0
+            For j As Integer = 0 To n - 1
+                If w_temp - rods(j) >= 0 AndAlso dp(w_temp) = dp(w_temp - rods(j)) + rods(j) Then
+                    combination.Add(rods(j))
+                    w_temp -= rods(j)
+                    Exit For
+                End If
+            Next
+        End While
+
+        Dim unused_space As Integer = width - dp(width)
+        Return New Tuple(Of List(Of Integer), Integer)(combination, unused_space)
+    End Function
 End Class
